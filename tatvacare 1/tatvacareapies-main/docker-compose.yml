@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./tatvacareapies-main
+      args:
+        APP_ENV: ${ENV}
+    container_name: tatvacare-apis
+    env_file:
+      - ./tatvacareapies-main/.env.${ENV}
+    ports:
+      - "8000:8000"
+    restart: always  
+    environment:
+      - NODE_ENV=production
+
+  frontend:
+    build:
+      context: ./tatvacareadmin-main
+      args:
+        REACT_APP_ENV: ${ENV}
+    container_name: tatvacareadmin-main-fronted
+    env_file:
+      - ./tatvacareadmin-main/.env.${ENV}
+    ports:
+      - "80:80"
+    restart: always  
+    depends_on:
+      - backend
